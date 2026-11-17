@@ -1,0 +1,85 @@
+@model List<Reserva>
+@{
+    ViewData["Title"] = "Reservas";
+    bool esPersonal = User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Recepcionista);
+}
+
+@functions {
+    static string ClaseEstado(EstadoReserva estado) => estado switch
+    {
+        EstadoReserva.Confirmada => "bg-primary",
+        EstadoReserva.CheckIn => "bg-success",
+        EstadoReserva.CheckOut => "bg-secondary",
+        EstadoReserva.Cancelada => "bg-danger",
+        _ => "bg-warning text-dark"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">@(esPersonal ? "Todas las reservas" : "Mis reservas")</h2>
+    @if (User.IsInRole(Roles.Huesped))
+    {
+        <a class="btn btn-primary" asp-action="Nueva">Nueva reserva</a>
+    }
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="alert alert-info">Aún no hay reservas.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    @if (esPersonal) { <th>Huésped</th> }
+                    <th>Habitación</th>
+                    <th>Entrada</th>
+                    <th>Salida</th>
+                    <th>Noches</th>
+                    <th class="text-end">Total</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td>@r.Id</td>
+                        @if (esPersonal) { <td>@r.Huesped?.Nombre</td> }
+                        <td>@r.Habitacion?.Numero (@r.Habitacion?.Tipo)</td>
+                        <td>@r.FechaEntrada.Fecha()</td>
+                        <td>@r.FechaSalida.Fecha()</td>
+                        <td>@r.Noches</td>
+                        <td class="text-end">@r.Total.Pesos()</td>
+                        <td><span class="badge @ClaseEstado(r.Estado)">@r.Estado</span></td>
+                        <td class="text-end text-nowrap">
+                            @if (esPersonal && r.Estado == EstadoReserva.Confirmada)
+                            {
+                                <form asp-action="CheckIn" asp-route-id="@r.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">Check-in</button>
+                                </form>
+                            }
+                            @if (esPersonal && r.Estado == EstadoReserva.CheckIn)
+                            {
+                                <form asp-action="CheckOut" asp-route-id="@r.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-secondary">Check-out</button>
+                                </form>
+                            }
+                            @if (r.Estado == EstadoReserva.Pendiente || r.Estado == EstadoReserva.Confirmada)
+                            {
+                                <form asp-action="Cancelar" asp-route-id="@r.Id" method="post" class="d-inline"
+                                      onsubmit="return confirm('¿Cancelar la reserva #@r.Id?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancelar</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

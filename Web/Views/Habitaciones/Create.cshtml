@@ -1,0 +1,12 @@
+@model Habitacion
+@{
+    ViewData["Title"] = "Nueva habitación";
+}
+
+<h2 class="mb-3">Nueva habitación</h2>
+
+<form asp-action="Create" method="post">
+    <partial name="_Form" model="Model" />
+    <button type="submit" class="btn btn-primary">Guardar</button>
+    <a class="btn btn-outline-secondary" asp-action="Index">Cancelar</a>
+</form>

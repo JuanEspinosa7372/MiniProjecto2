@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="p-4 p-md-5 mb-4 bg-light rounded-3 border">
+    <h1 class="display-5 fw-bold">Bienvenido al Hotel</h1>
+    <p class="lead">Reserva tu habitación en línea, consulta tus reservas y gestiona tu estadía de forma sencilla.</p>
+
+    @if (User.Identity?.IsAuthenticated != true)
+    {
+        <a class="btn btn-primary btn-lg me-2 mb-2" asp-controller="Account" asp-action="Registro">Crear cuenta</a>
+        <a class="btn btn-outline-secondary btn-lg mb-2" asp-controller="Account" asp-action="Login">Ingresar</a>
+    }
+    else if (User.IsInRole(Roles.Huesped))
+    {
+        <a class="btn btn-primary btn-lg" asp-controller="Reservas" asp-action="Nueva">Reservar ahora</a>
+    }
+    else
+    {
+        <a class="btn btn-primary btn-lg" asp-controller="Reservas" asp-action="Index">Ver reservas</a>
+    }
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-3">
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Habitaciones para todos</h5>
+            <p class="card-text">Sencillas, dobles y suites con distintas capacidades y precios por noche.</p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Reserva sin cruces</h5>
+            <p class="card-text">El sistema valida la disponibilidad por fechas y calcula el total con las tarifas vigentes.</p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h5 class="card-title">Web y escritorio</h5>
+            <p class="card-text">Recepción gestiona check-in y check-out desde la aplicación de escritorio, con los mismos datos.</p>
+        </div></div>
+    </div>
+</div>
