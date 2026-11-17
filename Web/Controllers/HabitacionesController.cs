@@ -3,6 +3,7 @@ using Core.Entidades;
 using Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Core.Enums;
 
 namespace Web.Controllers;
 
@@ -10,12 +11,20 @@ namespace Web.Controllers;
 public class HabitacionesController : Controller
 {
     private readonly IRepositorio<Habitacion> _habitaciones;
-
-    public HabitacionesController(IRepositorio<Habitacion> habitaciones) => _habitaciones = habitaciones;
-
+    private readonly IRepositorio<Reserva> _reservas;
+    
+    public HabitacionesController(IRepositorio<Habitacion> habitaciones, IRepositorio<Reserva> reservas)
+    {
+        _habitaciones = habitaciones;
+        _reservas = reservas;
+    }
     public async Task<IActionResult> Index()
     {
         var lista = await _habitaciones.ObtenerTodosAsync();
+
+        var conCheckIn = await _reservas.BuscarAsync(r => r.Estado == EstadoReserva.CheckIn);
+        ViewBag.Ocupadas = conCheckIn.Select(r => r.HabitacionId).ToHashSet();
+
         return View(lista.OrderBy(h => h.Numero).ToList());
     }
 
