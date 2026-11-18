@@ -208,19 +208,27 @@ public class MainForm : Form
     }
 
     private async Task CargarHabitacionesAsync()
-    {
-        using var alcance = _proveedor.CreateScope();
-        var repositorio = alcance.ServiceProvider.GetRequiredService<IRepositorio<Habitacion>>();
-
-        var habitaciones = await repositorio.ObtenerTodosAsync();
-
-        _gridHabitaciones.DataSource = habitaciones
-            .OrderBy(h => h.Numero)
-            .Select(h => new FilaHabitacion(h.Id, h.Numero, h.Tipo.ToString(), h.Capacidad, h.PrecioNoche, h.Estado.ToString()))
-            .ToList();
-
-        FormatearGrid(_gridHabitaciones);
-    }
+        {
+            using var alcance = _proveedor.CreateScope();
+            var repoHab = alcance.ServiceProvider.GetRequiredService<IRepositorio<Habitacion>>();
+            var repoRes = alcance.ServiceProvider.GetRequiredService<IRepositorio<Reserva>>();
+        
+            var habitaciones = await repoHab.ObtenerTodosAsync();
+            var ocupadas = (await repoRes.BuscarAsync(r => r.Estado == EstadoReserva.CheckIn))
+                .Select(r => r.HabitacionId)
+                .ToHashSet();
+        
+            _gridHabitaciones.DataSource = habitaciones
+                .OrderBy(h => h.Numero)
+                .Select(h => new FilaHabitacion(
+                    h.Id, h.Numero, h.Tipo.ToString(), h.Capacidad, h.PrecioNoche,
+                    h.Estado == EstadoHabitacion.Mantenimiento ? "Mantenimiento"
+                    : ocupadas.Contains(h.Id) ? "Ocupada"
+                    : "Disponible"))
+                .ToList();
+        
+            FormatearGrid(_gridHabitaciones);
+        }
 
     // ---------------------------------------------------------------- acciones
 
