@@ -1,0 +1,14 @@
+<Project>
+  <!--
+    Ajusta estas lineas segun tu SDK (comando: dotnet y luego list-sdks con dos guiones al inicio)
+      SDK 8.x  usa net8.0  y 8.0.*
+      SDK 9.x  usa net9.0  y 9.0.*
+      SDK 10.x usa net10.0 y 10.0.*
+    RollForward permite ejecutar con un runtime mas nuevo si no tienes el 8 instalado.
+  -->
+  <PropertyGroup>
+    <HotelTfm>net8.0</HotelTfm>
+    <EfVersion>8.0.*</EfVersion>
+    <RollForward>Major</RollForward>
+  </PropertyGroup>
+</Project>
