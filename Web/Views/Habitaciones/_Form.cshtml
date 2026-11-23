@@ -1,0 +1,31 @@
+@model Habitacion
+
+<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+<div class="row g-3 mb-3">
+    <div class="col-12 col-sm-6">
+        <label asp-for="Numero" class="form-label">Número</label>
+        <input asp-for="Numero" class="form-control" />
+        <span asp-validation-for="Numero" class="text-danger"></span>
+    </div>
+    <div class="col-12 col-sm-6">
+        <label asp-for="Tipo" class="form-label">Tipo</label>
+        <select asp-for="Tipo" class="form-select" asp-items="Html.GetEnumSelectList<TipoHabitacion>()"></select>
+        <span asp-validation-for="Tipo" class="text-danger"></span>
+    </div>
+    <div class="col-12 col-sm-6">
+        <label asp-for="Capacidad" class="form-label">Capacidad (personas)</label>
+        <input asp-for="Capacidad" class="form-control" type="number" min="1" max="10" />
+        <span asp-validation-for="Capacidad" class="text-danger"></span>
+    </div>
+    <div class="col-12 col-sm-6">
+        <label asp-for="PrecioNoche" class="form-label">Precio por noche (COP)</label>
+        <input asp-for="PrecioNoche" class="form-control" type="number" min="1" step="1" />
+        <span asp-validation-for="PrecioNoche" class="text-danger"></span>
+    </div>
+    <div class="col-12 col-sm-6">
+        <label asp-for="Estado" class="form-label">Estado</label>
+        <select asp-for="Estado" class="form-select" asp-items="Html.GetEnumSelectList<EstadoHabitacion>()"></select>
+        <span asp-validation-for="Estado" class="text-danger"></span>
+    </div>
+</div>

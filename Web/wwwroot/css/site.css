@@ -1,0 +1,109 @@
+/* Hotel · identidad visual: pared encalada, puerta azul, llaves de latón.
+   Un solo tipo de letra (Atkinson Hyperlegible, pensada para leer rápido). */
+:root {
+    --pared: #F2F5F1;
+    --papel: #FFFFFF;
+    --puerta: #17466B;
+    --puerta-osc: #0F3351;
+    --laton: #C99A2E;
+    --laton-claro: #F1DFAE;
+    --guadua: #3F7D4B;
+    --cayena: #B23A2E;
+    --tinta: #1C2A33;
+    --tinta-suave: #5B6A73;
+    --linea: #D5DDD6;
+
+    --bs-primary: var(--puerta);
+    --bs-primary-rgb: 23, 70, 107;
+    --bs-body-bg: var(--pared);
+    --bs-body-color: var(--tinta);
+    --bs-body-font-family: "Atkinson Hyperlegible", system-ui, "Segoe UI", Roboto, sans-serif;
+    --bs-link-color: var(--puerta);
+    --bs-link-hover-color: var(--puerta-osc);
+    --bs-border-color: var(--linea);
+}
+
+body { font-size: 1.0625rem; line-height: 1.55; }
+h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -.01em; }
+.container { max-width: 1080px; }
+:focus-visible { outline: 3px solid var(--laton); outline-offset: 2px; }
+
+/* Barra superior */
+.barra { background: var(--puerta); }
+.barra .navbar-brand { font-weight: 700; display: flex; align-items: center; gap: .6rem; }
+.marca-llave { width: 14px; height: 22px; background: var(--laton); border-radius: 4px 4px 3px 3px; position: relative; }
+.marca-llave::after { content: ""; position: absolute; top: 4px; left: 50%; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; background: var(--puerta); }
+.barra .nav-link { color: rgba(255,255,255,.82); }
+.barra .nav-link:hover, .barra .nav-link:focus { color: #fff; }
+
+/* Botones */
+.btn { border-radius: 8px; font-weight: 700; }
+.btn-primary { --bs-btn-bg: var(--puerta); --bs-btn-border-color: var(--puerta); --bs-btn-hover-bg: var(--puerta-osc); --bs-btn-hover-border-color: var(--puerta-osc); --bs-btn-active-bg: var(--puerta-osc); --bs-btn-active-border-color: var(--puerta-osc); }
+.btn-outline-primary { --bs-btn-color: var(--puerta); --bs-btn-border-color: var(--puerta); --bs-btn-hover-bg: var(--puerta); --bs-btn-hover-border-color: var(--puerta); }
+.btn-success { --bs-btn-bg: var(--guadua); --bs-btn-border-color: var(--guadua); --bs-btn-hover-bg: #336840; --bs-btn-hover-border-color: #336840; --bs-btn-active-bg: #336840; }
+.btn-outline-danger { --bs-btn-color: var(--cayena); --bs-btn-border-color: var(--cayena); --bs-btn-hover-bg: var(--cayena); --bs-btn-hover-border-color: var(--cayena); }
+
+/* Formularios */
+.form-label { font-weight: 700; margin-bottom: .25rem; }
+.form-control, .form-select { border-radius: 8px; border-color: #B9C4BC; padding: .55rem .75rem; }
+.form-control:focus, .form-select:focus { border-color: var(--puerta); box-shadow: 0 0 0 .2rem rgba(23,70,107,.2); }
+.panel { background: var(--papel); border: 1px solid var(--linea); border-radius: 10px; padding: 1.25rem; }
+.auth { max-width: 460px; margin: 1.5rem auto; }
+
+/* Avisos */
+.aviso { border-left: 5px solid var(--puerta); background: var(--papel); padding: .9rem 1.1rem; border-radius: 4px 10px 10px 4px; }
+.aviso-error { border-left-color: var(--cayena); }
+.alert { border-radius: 10px; }
+
+/* Insignias de estado */
+.badge { font-weight: 700; padding: .4em .7em; border-radius: 999px; }
+.badge.bg-primary { background: var(--puerta) !important; }
+.badge.bg-success { background: var(--guadua) !important; }
+.badge.bg-danger { background: var(--cayena) !important; }
+.badge.bg-secondary { background: var(--tinta-suave) !important; }
+.badge.bg-warning { background: var(--laton) !important; color: var(--tinta) !important; }
+
+/* Tablas */
+.table { --bs-table-bg: var(--papel); --bs-table-striped-bg: #F7F9F6; }
+.table > thead.table-dark { --bs-table-bg: var(--puerta); --bs-table-color: #fff; border-color: var(--puerta); }
+.table td, .table th { vertical-align: middle; }
+
+/* Portada */
+.portada { display: grid; gap: 2rem; grid-template-columns: 1fr; align-items: center; padding: 1rem 0 2rem; }
+.portada h1 { font-size: clamp(2rem, 5vw, 3.25rem); line-height: 1.1; max-width: 16ch; }
+.portada .lead { max-width: 46ch; color: var(--tinta-suave); }
+@media (min-width: 768px) { .portada { grid-template-columns: 1.2fr 1fr; } }
+.datos-hotel { display: grid; gap: 1.5rem; grid-template-columns: 1fr; margin-top: 1.5rem; }
+.datos-hotel > div { border-top: 3px solid var(--puerta); padding-top: .75rem; }
+.datos-hotel h2 { font-size: 1.1rem; }
+.datos-hotel p { color: var(--tinta-suave); margin: 0; }
+@media (min-width: 768px) { .datos-hotel { grid-template-columns: repeat(3, 1fr); } }
+
+/* Llaves: el tablero de llaves de recepción */
+.tablero { display: grid; gap: 1.1rem; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); }
+.llave { position: relative; padding: 2.1rem .9rem .9rem; border-radius: 16px 16px 10px 10px; background: var(--laton); color: var(--tinta); border: 2px solid var(--laton); }
+.llave::before { content: ""; position: absolute; top: .7rem; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--pared); box-shadow: inset 0 0 0 2px rgba(0,0,0,.25); }
+.llave .num { font-size: 2.4rem; font-weight: 700; line-height: 1; }
+.llave .tipo { font-weight: 700; margin-top: .25rem; }
+.llave .detalle { font-size: .92rem; }
+.llave .estado { display: inline-block; margin-top: .6rem; font-weight: 700; font-size: .9rem; }
+.llave .editar { display: block; margin-top: .6rem; color: var(--tinta); font-weight: 700; font-size: .92rem; }
+.llave.ocupada { background: transparent; border: 2px dashed var(--cayena); color: var(--cayena); }
+.llave.ocupada::before { box-shadow: inset 0 0 0 2px var(--cayena); }
+.llave.ocupada .editar { color: var(--cayena); }
+.llave.mantenimiento { background: repeating-linear-gradient(135deg, var(--laton-claro) 0 10px, #FFF 10px 20px); border-color: var(--laton); }
+.llave.demo { pointer-events: none; }
+
+/* Tablas que se apilan en pantallas pequeñas (smartphone) */
+@media (max-width: 767.98px) {
+    .tabla-apilada thead { display: none; }
+    .tabla-apilada, .tabla-apilada tbody, .tabla-apilada tr, .tabla-apilada td { display: block; width: 100%; }
+    .tabla-apilada tr { background: var(--papel); border: 1px solid var(--linea); border-radius: 10px; padding: .4rem .9rem; margin-bottom: .8rem; }
+    .tabla-apilada td { display: flex; justify-content: space-between; gap: 1rem; border: 0; padding: .3rem 0; text-align: right !important; }
+    .tabla-apilada td::before { content: attr(data-label); font-weight: 700; text-align: left; color: var(--tinta-suave); }
+    .tabla-apilada td.acciones { justify-content: flex-end; flex-wrap: wrap; padding-top: .6rem; }
+    .tabla-apilada td.acciones::before { content: none; }
+}
+.card-habitacion .precio { font-size: 1.25rem; font-weight: 700; }
+footer { background: transparent !important; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }

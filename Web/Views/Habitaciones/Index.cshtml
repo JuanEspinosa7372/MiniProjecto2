@@ -1,0 +1,36 @@
+@model List<Habitacion>
+@{
+    ViewData["Title"] = "Habitaciones";
+    var ocupadas = (HashSet<int>)ViewBag.Ocupadas;
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h2 mb-0">Habitaciones</h1>
+    @if (User.IsInRole(Roles.Admin))
+    {
+        <a class="btn btn-primary" asp-action="Create">Nueva habitación</a>
+    }
+</div>
+<p class="text-muted">Cada llave es una habitación: con llave en el tablero está libre; el contorno punteado indica que la llave está con el huésped.</p>
+
+<div class="tablero">
+    @foreach (var h in Model)
+    {
+        bool enMantenimiento = h.Estado == EstadoHabitacion.Mantenimiento;
+        bool estaOcupada = !enMantenimiento && ocupadas.Contains(h.Id);
+        string clase = enMantenimiento ? "mantenimiento" : estaOcupada ? "ocupada" : "";
+        string estado = enMantenimiento ? "Mantenimiento" : estaOcupada ? "Ocupada" : "Disponible";
+
+        <article class="llave @clase">
+            <div class="num">@h.Numero</div>
+            <div class="tipo">@h.Tipo</div>
+            <div class="detalle">@h.Capacidad persona(s)</div>
+            <div class="detalle">@h.PrecioNoche.Pesos() por noche</div>
+            <span class="estado">@estado</span>
+            @if (User.IsInRole(Roles.Admin))
+            {
+                <a class="editar" asp-action="Edit" asp-route-id="@h.Id">Editar</a>
+            }
+        </article>
+    }
+</div>

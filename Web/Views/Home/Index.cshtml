@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="portada">
+    <div>
+        <h1>Tu habitación, sin cruces de fechas.</h1>
+        <p class="lead">Busca disponibilidad, reserva en línea y consulta tus reservas. Recepción atiende el check-in y el check-out con los mismos datos.</p>
+
+        @if (User.Identity?.IsAuthenticated != true)
+        {
+            <a class="btn btn-primary btn-lg me-2 mb-2" asp-controller="Account" asp-action="Registro">Crear cuenta</a>
+            <a class="btn btn-outline-primary btn-lg mb-2" asp-controller="Account" asp-action="Login">Ingresar</a>
+        }
+        else if (User.IsInRole(Roles.Huesped))
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="Reservas" asp-action="Nueva">Reservar ahora</a>
+        }
+        else
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="Reservas" asp-action="Index">Ver reservas</a>
+        }
+    </div>
+
+    <div class="tablero" aria-label="Tipos de habitación">
+        <div class="llave demo"><div class="num">101</div><div class="tipo">Sencilla</div><div class="detalle">1 a 2 personas</div></div>
+        <div class="llave demo"><div class="num">202</div><div class="tipo">Doble</div><div class="detalle">2 a 4 personas</div></div>
+        <div class="llave demo"><div class="num">301</div><div class="tipo">Suite</div><div class="detalle">hasta 4 personas</div></div>
+    </div>
+</section>
+
+<section class="datos-hotel">
+    <div><h2>Disponibilidad real</h2><p>El sistema revisa las fechas de cada habitación antes de confirmar tu reserva.</p></div>
+    <div><h2>Total claro</h2><p>Ves el valor de toda la estadía, con descuentos y recargos de temporada incluidos.</p></div>
+    <div><h2>Web y escritorio</h2><p>Recepción trabaja en la aplicación de escritorio sobre la misma base de datos.</p></div>
+</section>

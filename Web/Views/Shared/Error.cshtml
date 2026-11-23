@@ -1,0 +1,13 @@
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<div class="aviso aviso-error">
+    <h1 class="h4">No pudimos completar la solicitud</h1>
+    <p class="mb-2">Intenta de nuevo o vuelve al <a asp-controller="Home" asp-action="Index">inicio</a>.</p>
+    @if (Model.ShowRequestId)
+    {
+        <p class="mb-0 small">Código de la solicitud: <code>@Model.RequestId</code></p>
+    }
+</div>

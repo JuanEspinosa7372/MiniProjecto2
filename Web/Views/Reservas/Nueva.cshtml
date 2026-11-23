@@ -1,0 +1,65 @@
+@model DisponibilidadVM
+@{
+    ViewData["Title"] = "Nueva reserva";
+}
+
+<h2 class="mb-3">Nueva reserva</h2>
+
+<form asp-action="Nueva" method="post" class="panel mb-4">
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="row g-3 align-items-end">
+        <div class="col-12 col-sm-6 col-lg-3">
+            <label asp-for="Entrada" class="form-label"></label>
+            <input asp-for="Entrada" class="form-control" type="date" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <label asp-for="Salida" class="form-label"></label>
+            <input asp-for="Salida" class="form-control" type="date" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <label asp-for="Personas" class="form-label"></label>
+            <input asp-for="Personas" class="form-control" type="number" min="1" max="10" />
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <button type="submit" class="btn btn-primary w-100">Buscar disponibilidad</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Habitaciones is not null)
+{
+    if (Model.Habitaciones.Count == 0)
+    {
+        <div class="alert alert-warning">No hay habitaciones disponibles para esas fechas. Prueba con otro rango.</div>
+    }
+    else
+    {
+        int noches = (Model.Salida.Date - Model.Entrada.Date).Days;
+
+        <h4 class="mb-3">@Model.Habitaciones.Count habitación(es) disponible(s) · @noches noche(s)</h4>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3">
+            @foreach (var h in Model.Habitaciones)
+            {
+                <div class="col">
+                    <div class="card card-habitacion h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Habitación @h.Numero</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@h.Tipo · hasta @h.Capacidad persona(s)</h6>
+                            <p class="mb-1">@h.PrecioNoche.Pesos() por noche</p>
+                            <p class="precio mb-3">Total: @Model.Totales[h.Id].Pesos()</p>
+
+                            <form asp-action="Crear" method="post">
+                                <input type="hidden" name="habitacionId" value="@h.Id" />
+                                <input type="hidden" name="entrada" value="@Model.Entrada.ToString("yyyy-MM-dd")" />
+                                <input type="hidden" name="salida" value="@Model.Salida.ToString("yyyy-MM-dd")" />
+                                <input type="hidden" name="personas" value="@Model.Personas" />
+                                <button type="submit" class="btn btn-success w-100">Reservar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+}
